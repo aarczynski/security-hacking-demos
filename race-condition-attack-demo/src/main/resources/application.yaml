@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:ticketsdb
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    locations: db/migration/h2
+server:
+  port: 8081

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teacher Rankings</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-light">
+<div class="container my-5">
+  <h1 class="mb-4">Teacher Rankings</h1>
+  <div id="teachers"></div>
+</div>
+<script src="/js/app.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="conflictToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body">
+        You already submitted a review for this teacher.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
