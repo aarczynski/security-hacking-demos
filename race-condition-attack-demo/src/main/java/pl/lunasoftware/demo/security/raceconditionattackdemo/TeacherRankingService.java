@@ -1,11 +1,17 @@
 package pl.lunasoftware.demo.security.raceconditionattackdemo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class TeacherRankingService {
+    private static Logger log = LoggerFactory.getLogger(TeacherRankingService.class);
+
     private final TeacherRepository teacherRepository;
     private final RankingRepository rankingRepository;
     private final UserRepository userRepository;
@@ -17,7 +23,7 @@ public class TeacherRankingService {
     }
 
     public List<TeacherSummaryDto> getAllTeacherRankings() {
-        return teacherRepository.findAllBy().stream()
+        List<TeacherSummaryDto> result = teacherRepository.findAllBy().stream()
                 .map(t -> new TeacherSummaryDto(
                         t.getId(), t.getName(), t.getAverageRanking(),
                         t.getRankings().stream()
@@ -25,11 +31,14 @@ public class TeacherRankingService {
                                 .toList()
                 ))
                 .toList();
+        log.info("Teacher rankings found: {}", result);
+        return result;
     }
 
     public void addTeacherRanking(TeacherRankingRequest teacherRankingRequest) {
         rankingRepository.findOneByReviewerIdAndTeacherId(teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId())
                 .ifPresent(t -> {
+                    log.info("Rejecting review from user {} of teacher {}. It already exists.", teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId());
                     throw new TeacherRankingExistsException(teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId());
                 });
 
@@ -46,5 +55,6 @@ public class TeacherRankingService {
         );
 
         rankingRepository.save(ranking);
+        log.info("Added ranking from {} of teacher {}", teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId());
     }
 }
