@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://demo_postgres:5432/teachers-db
+    username: postgres
+    password: postgrespassword

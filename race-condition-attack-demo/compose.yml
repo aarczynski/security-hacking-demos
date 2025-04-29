@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: vulnerable_demo_app
+    build:
+      context: ./
+      dockerfile: compose/app/Dockerfile
+    command: [ "java", "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "./application.jar" ]
+    ports:
+      - 8081:8080
+      - 5005:5005
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    container_name: demo_postgres
+    image: "postgres:17.4"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgrespassword
+      - POSTGRES_DB=teachers-db
+      - PGDATA=/tmp/postgres-data
+    tmpfs:
+      - /tmp/postgres-data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 2s
+      timeout: 1s
+      retries: 10
