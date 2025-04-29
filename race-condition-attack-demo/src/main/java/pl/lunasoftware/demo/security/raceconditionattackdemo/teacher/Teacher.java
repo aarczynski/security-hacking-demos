@@ -1,10 +1,11 @@
-package pl.lunasoftware.demo.security.raceconditionattackdemo;
+package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking.Ranking;
 
 import java.util.ArrayList;
 import java.util.List;

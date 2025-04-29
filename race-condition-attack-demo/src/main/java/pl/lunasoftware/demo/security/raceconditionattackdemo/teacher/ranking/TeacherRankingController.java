@@ -1,4 +1,4 @@
-package pl.lunasoftware.demo.security.raceconditionattackdemo;
+package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;

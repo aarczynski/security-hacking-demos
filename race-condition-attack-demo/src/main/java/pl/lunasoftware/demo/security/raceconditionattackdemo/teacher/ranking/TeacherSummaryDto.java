@@ -1,4 +1,4 @@
-package pl.lunasoftware.demo.security.raceconditionattackdemo;
+package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking;
 
 import java.time.LocalDateTime;
 import java.util.List;

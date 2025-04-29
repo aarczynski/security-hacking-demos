@@ -1,4 +1,4 @@
-package pl.lunasoftware.demo.security.raceconditionattackdemo;
+package pl.lunasoftware.demo.security.raceconditionattackdemo.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

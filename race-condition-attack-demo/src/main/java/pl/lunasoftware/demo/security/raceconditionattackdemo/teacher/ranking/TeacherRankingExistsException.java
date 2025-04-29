@@ -1,4 +1,4 @@
-package pl.lunasoftware.demo.security.raceconditionattackdemo;
+package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

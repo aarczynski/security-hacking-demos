@@ -1,4 +1,4 @@
-package pl.lunasoftware.demo.security.raceconditionattackdemo;
+package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -9,6 +9,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.Teacher;
+import pl.lunasoftware.demo.security.raceconditionattackdemo.user.User;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package pl.lunasoftware.demo.security.raceconditionattackdemo;
+package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
