@@ -1,5 +1,3 @@
-const reviewers = ['Joe', 'Tom', 'Kevin'];
-
 document.addEventListener('DOMContentLoaded', function () {
     loadTeachers();
 
@@ -14,9 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const avgRanking = teacher.averageRanking != null ? teacher.averageRanking.toFixed(2) : 'N/A';
 
             const reviews = teacher.rankings.map((review, idx) => {
-                const reviewer = reviewers[(index + idx) % reviewers.length];
                 const date = new Date(review.dateAdded).toLocaleDateString();
-                return `<li class="list-group-item">${reviewer} (${date}) — Score: ${review.score} — ${review.comment}</li>`;
+                return `<li class="list-group-item">${review.reviewer} (${date}) — Score: ${review.score} — ${review.comment}</li>`;
             }).join('');
 
             const html = `
