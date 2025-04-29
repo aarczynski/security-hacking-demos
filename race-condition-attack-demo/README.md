@@ -54,4 +54,5 @@ Connection: keep-alive
 
 ## Possible fixes
 * Adding `UNIQUE (REVIEWER_ID, TEACHER_ID)` constrain in data model,
-* Using `@Transactional(isolation = Isolation.SERIALIZABLE)` on top of the `addTeacherRanking(...)` method.
+* Synchronizing `addTeacherRanking(...)` method per user,
+* Using `@Transactional(isolation = Isolation.SERIALIZABLE)` on top of the `addTeacherRanking(...)` method. This will cause performance hit.

@@ -44,17 +44,17 @@ public class TeacherRankingService {
                     throw new TeacherRankingExistsException(teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId());
                 });
 
-        User reviewer = userRepository.findById(teacherRankingRequest.reviewerId())
-                .orElseThrow(() -> new IllegalStateException(String.format("User %s is missing", teacherRankingRequest.reviewerId())));
-        Teacher teacher = teacherRepository.findById(teacherRankingRequest.teacherId())
-                .orElseThrow(() -> new IllegalStateException(String.format("Teacher %s is missing", teacherRankingRequest.teacherId())));
+            User reviewer = userRepository.findById(teacherRankingRequest.reviewerId())
+                    .orElseThrow(() -> new IllegalStateException(String.format("User %s is missing", teacherRankingRequest.reviewerId())));
+            Teacher teacher = teacherRepository.findById(teacherRankingRequest.teacherId())
+                    .orElseThrow(() -> new IllegalStateException(String.format("Teacher %s is missing", teacherRankingRequest.teacherId())));
 
-        Ranking ranking = new Ranking(
-                reviewer,
-                teacherRankingRequest.score(),
-                teacherRankingRequest.comment(),
-                teacher
-        );
+            Ranking ranking = new Ranking(
+                    reviewer,
+                    teacherRankingRequest.score(),
+                    teacherRankingRequest.comment(),
+                    teacher
+            );
 
         rankingRepository.save(ranking);
         log.info("Added ranking from {} of teacher {}", teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId());
