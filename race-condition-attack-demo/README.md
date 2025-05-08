@@ -1,13 +1,4 @@
 # Race Condition Vulnerability
-## Running locally
-```shell
-make start
-```
-or
-```shell
-./gradlew clean build && docker-compose up --build
-```
-
 ## Application description
 Vulnerable demo application allows to rate teachers from 1 to 5. User is allowed to rate each teacher only once.
 Application checks if a given review exists before submitting a new one:
@@ -18,38 +9,45 @@ rankingRepository.findOneByReviewerIdAndTeacherId(teacherRankingRequest.reviewer
         });
 ```
 
+## Running locally
+```shell
+make start
+```
+or
+```shell
+./gradlew clean build && docker-compose up --build
+```
+It starts two Docker containers:
+* Vulnerable Java web application (available at https://localhost:8443),
+* Postgres database. It resets stored data with each restart to defaults (two teachers, each with one 5 score).
+
+### Secure connection
+Please note `https://` scheme. HTTP/ RFC does not enforce using TLS but in practice, vast majority of HTTP/2 clients support only secure connections.
+This project uses self-signed certificate which is present in this GIT repository, together with password. It will not be trusted by any browser.
+It is not advised to add it to browser's permanent trust store locally.
+
 ## Vulnerability description
 If requests are sent quickly enough, more than one rating from the same user for a given teacher will be saved due to race condition.
 ![image](./readme-assets/race-condition-parallel.png)
 source: https://portswigger.net/research/the-single-packet-attack-making-remote-race-conditions-local
 
-HTTP/2 allows grouping multiple requests and sending them together by a trigger request to minimalize jitter effect. This makes race condition attack even more effective.
+HTTP/2 allows sending multiple requests in one TCP connection. This makes grouping incomplete requests on server side possible before processing them.
+Issuing final fragment of each request in a single TCP packet will trigger processing all of them simultaneously by the server.
+This makes race condition much more likely by eliminating network jitter.
 
 ![image](./readme-assets/race-condition-single-packet-attack.png)
 source: https://portswigger.net/research/the-single-packet-attack-making-remote-race-conditions-local
 
-## Vulnerability expolitation
+## Vulnerability exploitation
 Send multiple requests quickly to add a review for a particular teacher. You can use Burp Suite or other tool. Example:
-```http request
-POST /api/v1/teachers HTTP/1.1
-Host: localhost:8081
-Content-Length: 181
-sec-ch-ua-platform: "macOS"
-Accept-Language: en-GB,en;q=0.9
-sec-ch-ua: "Chromium";v="135", "Not-A.Brand";v="8"
-Content-Type: application/json
-sec-ch-ua-mobile: ?0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36
-Accept: */*
-Origin: http://localhost:8081
-Sec-Fetch-Site: same-origin
-Sec-Fetch-Mode: cors
-Sec-Fetch-Dest: empty
-Referer: http://localhost:8081/
-Accept-Encoding: gzip, deflate, br
-Connection: keep-alive
 
-{"reviewerId":"c884000b-2333-4960-8be1-8bd9c11f1da9","teacherId":"1b423302-3371-477c-87e7-19c25beb4bd6","score":1,"comment":"Terrbile experience!","date":"2025-04-29T13:34:22.533Z"}
+```http request
+POST /api/v1/teachers HTTP/2
+Host: localhost:8443
+Content-Type: application/json
+Accept: */*
+
+{"reviewerId":"c884000b-2333-4960-8be1-8bd9c11f1da9","teacherId":"1b423302-3371-477c-87e7-19c25beb4bd6","score":1,"comment":"Terrible experience!!!","date":"2025-05-08T08:59:49.672Z"}
 ```
 
 ## Possible fixes

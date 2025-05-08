@@ -3,6 +3,8 @@ package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.Teacher;
 import pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.TeacherRepository;
 import pl.lunasoftware.demo.security.raceconditionattackdemo.user.UserRepository;
