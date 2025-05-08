@@ -8,9 +8,9 @@ spring:
 server:
   http2:
     enabled: true
-  port: 8443
   ssl:
     key-store: classpath:keystore.p12
     key-store-password: DW!1je81$gESIh*zgRMg$8^nMVdKUvEG
     key-store-type: PKCS12
     key-alias: raceconditiondemo
+  port: 8443
