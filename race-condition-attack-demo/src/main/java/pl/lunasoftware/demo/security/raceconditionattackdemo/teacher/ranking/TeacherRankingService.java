@@ -3,12 +3,11 @@ package pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.ranking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.Teacher;
 import pl.lunasoftware.demo.security.raceconditionattackdemo.teacher.TeacherRepository;
-import pl.lunasoftware.demo.security.raceconditionattackdemo.user.UserRepository;
 import pl.lunasoftware.demo.security.raceconditionattackdemo.user.User;
+import pl.lunasoftware.demo.security.raceconditionattackdemo.user.UserRepository;
 
 import java.util.List;
 
@@ -39,6 +38,7 @@ public class TeacherRankingService {
         return result;
     }
 
+    @Transactional
     public void addTeacherRanking(TeacherRankingRequest teacherRankingRequest) {
         rankingRepository.findOneByReviewerIdAndTeacherId(teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId())
                 .ifPresent(t -> {
@@ -46,17 +46,17 @@ public class TeacherRankingService {
                     throw new TeacherRankingExistsException(teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId());
                 });
 
-            User reviewer = userRepository.findById(teacherRankingRequest.reviewerId())
-                    .orElseThrow(() -> new IllegalStateException(String.format("User %s is missing", teacherRankingRequest.reviewerId())));
-            Teacher teacher = teacherRepository.findById(teacherRankingRequest.teacherId())
-                    .orElseThrow(() -> new IllegalStateException(String.format("Teacher %s is missing", teacherRankingRequest.teacherId())));
+        User reviewer = userRepository.findById(teacherRankingRequest.reviewerId())
+                .orElseThrow(() -> new IllegalStateException(String.format("User %s is missing", teacherRankingRequest.reviewerId())));
+        Teacher teacher = teacherRepository.findById(teacherRankingRequest.teacherId())
+                .orElseThrow(() -> new IllegalStateException(String.format("Teacher %s is missing", teacherRankingRequest.teacherId())));
 
-            Ranking ranking = new Ranking(
-                    reviewer,
-                    teacherRankingRequest.score(),
-                    teacherRankingRequest.comment(),
-                    teacher
-            );
+        Ranking ranking = new Ranking(
+                reviewer,
+                teacherRankingRequest.score(),
+                teacherRankingRequest.comment(),
+                teacher
+        );
 
         rankingRepository.save(ranking);
         log.info("Added ranking from {} of teacher {}", teacherRankingRequest.reviewerId(), teacherRankingRequest.teacherId());
