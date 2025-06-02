@@ -25,6 +25,7 @@ public class TeacherRankingService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public List<TeacherSummaryDto> getAllTeacherRankings() {
         List<TeacherSummaryDto> result = teacherRepository.findAllBy().stream()
                 .map(t -> new TeacherSummaryDto(
